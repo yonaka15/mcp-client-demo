@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCP Worker Tester</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .panel {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+      }
+
+      #status {
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+
+      #output {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        font-family: monospace;
+        white-space: pre-wrap;
+        height: 300px;
+        overflow-y: auto;
+        border: 1px solid #e0e0e0;
+      }
+
+      .tool-panel {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+      }
+
+      textarea {
+        height: 150px;
+        font-family: monospace;
+        resize: vertical;
+      }
+
+      button {
+        background: #1976d2;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      button:hover:not(:disabled) {
+        background: #1565c0;
+      }
+
+      h2 {
+        margin: 0 0 15px 0;
+        color: #333;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>MCP Worker Tester</h1>
+
+      <div class="panel">
+        <h2>Connection</h2>
+        <button id="connectBtn">Connect</button>
+        <button id="disconnectBtn">Disconnect</button>
+        <button id="listToolsBtn">List Tools</button>
+        <div id="status">Status: Disconnected</div>
+      </div>
+
+      <div class="panel tool-panel">
+        <h2>Tool Execution</h2>
+        <div>
+          <label for="toolSelect">Select Tool:</label>
+          <select id="toolSelect"></select>
+        </div>
+        <div>
+          <label for="toolInput">Input (JSON):</label>
+          <textarea
+            id="toolInput"
+            placeholder='{
+  "key": "value"
+}'
+          ></textarea>
+        </div>
+        <button id="executeToolBtn">Execute Tool</button>
+      </div>
+
+      <div class="panel">
+        <h2>Log Output</h2>
+        <div id="output"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./src/worker-test.ts"></script>
+  </body>
+</html>
