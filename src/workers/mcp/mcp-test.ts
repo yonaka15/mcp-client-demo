@@ -1,4 +1,4 @@
-import type { WorkerResponse, WorkerStatus } from "./types";
+import type { MCPWorkerResponse, MCPWorkerStatus } from "./mcp-types";
 
 import { ListToolsResultSchema } from "@modelcontextprotocol/sdk/types.js";
 import type { ListToolsResult } from "@modelcontextprotocol/sdk/types.js";
@@ -15,7 +15,7 @@ class MCPWorkerTester {
   private executeToolBtn!: HTMLButtonElement;
 
   constructor() {
-    this.worker = new Worker(new URL("./worker.ts", import.meta.url), {
+    this.worker = new Worker(new URL("./mcp-worker.ts", import.meta.url), {
       type: "module",
     });
     this.setupElements();
@@ -59,7 +59,7 @@ class MCPWorkerTester {
   }
 
   private setupWorkerHandlers(): void {
-    this.worker.onmessage = (e: MessageEvent<WorkerResponse>) => {
+    this.worker.onmessage = (e: MessageEvent<MCPWorkerResponse>) => {
       const response = e.data;
       this.log("Worker response:", response);
 
@@ -69,9 +69,9 @@ class MCPWorkerTester {
           break;
         case "result": {
           const result = response.result;
-          const validatedResult = ListToolsResultSchema.parse(result);
           // List Tools response
           if ("tools" in result) {
+            const validatedResult = ListToolsResultSchema.parse(result);
             this.updateToolList(validatedResult);
             if (result._meta) {
               this.log("Metadata:", result._meta);
@@ -207,7 +207,7 @@ class MCPWorkerTester {
     });
   }
 
-  private handleStatusUpdate(status: WorkerStatus): void {
+  private handleStatusUpdate(status: MCPWorkerStatus): void {
     this.updateStatus(status);
     switch (status) {
       case "connected":
@@ -239,14 +239,14 @@ class MCPWorkerTester {
     this.updateStatus("error");
   }
 
-  private updateStatus(status: WorkerStatus): void {
+  private updateStatus(status: MCPWorkerStatus): void {
     this.statusDiv.textContent = `Status: ${
       status.charAt(0).toUpperCase() + status.slice(1)
     }`;
     this.statusDiv.style.background = this.getStatusColor(status);
   }
 
-  private getStatusColor(status: WorkerStatus): string {
+  private getStatusColor(status: MCPWorkerStatus): string {
     const colors = {
       connected: "#e8f5e9",
       connecting: "#fff3e0",
